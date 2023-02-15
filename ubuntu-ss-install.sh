@@ -24,8 +24,8 @@ get_latest_ver(){
 # Set shadowsocks-libev config password
 set_password(){
     echo "\033[1;34mPlease enter password for shadowsocks-libev:\033[0m"
-    read -p "(Default password: M3chD09):" shadowsockspwd
-    [ -z "${shadowsockspwd}" ] && shadowsockspwd="M3chD09"
+    read -p "(Default password: abcd):" shadowsockspwd
+    [ -z "${shadowsockspwd}" ] && shadowsockspwd="abcd123$"
     echo "\033[1;35mpassword = ${shadowsockspwd}\033[0m"
 }
 
@@ -82,11 +82,11 @@ install_mbedtls(){
     if [ -f /usr/lib/libmbedtls.a ];then
         echo "\033[1;32mMbedTLS already installed, skip.\033[0m"
     else
-        if [ ! -f mbedtls-$MBEDTLS_VER-gpl.tgz ];then
-            wget https://tls.mbed.org/download/mbedtls-$MBEDTLS_VER-gpl.tgz
+        if [ ! -f mbedtls-$MBEDTLS_VER.tar.gz ];then
+            wget https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/mbedtls-$MBEDTLS_VER.tar.gz
         fi
-        tar xf mbedtls-$MBEDTLS_VER-gpl.tgz
-        cd mbedtls-$MBEDTLS_VER
+        tar xf mbedtls-$MBEDTLS_VER.tar.gz
+        cd mbedtls-mbedtls-$MBEDTLS_VER
         make SHARED=1 CFLAGS=-fPIC
         make DESTDIR=/usr install
         cd ..
