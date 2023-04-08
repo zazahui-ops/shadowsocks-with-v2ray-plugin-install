@@ -29,6 +29,14 @@ set_password(){
     echo "\033[1;35mpassword = ${shadowsockspwd}\033[0m"
 }
 
+# Set shadowsocks-rust config port
+set_port(){
+    echo "\033[1;34mPlease enter port for shadowsocks-rust:\033[0m"
+    read -p "(Default port: abcd):" shadowsocksport
+    [ -z "${shadowsocksport}" ] && shadowsocksport="443"
+    echo "\033[1;35mport = ${shadowsocksport}\033[0m"
+}
+
 # Set domain
 set_domain(){
     echo "\033[1;34mPlease enter your domain:\033[0m"
@@ -112,7 +120,6 @@ install_ss(){
         ss_file_tar=$(echo "$ss_file" | sed 's/\.xz$//')
         tar xf $ss_file_tar
         mv ss* /usr/local/bin/
-
         if [ ! -f /usr/local/bin/ssserver ];then
             echo "\033[1;31mFailed to install shadowsocks-rust.\033[0m"
             exit 1
@@ -145,7 +152,7 @@ ss_conf(){
     cat >/etc/shadowsocks-rust/config.json << EOF
 {
     "server":"0.0.0.0",
-    "server_port":443,
+    "server_port":$shadowsocksport,
     "password":"$shadowsockspwd",
     "timeout":300,
     "method":"aes-256-gcm",
@@ -206,7 +213,7 @@ print_ss_info(){
     clear
     echo "\033[1;32mCongratulations, shadowsocks-rust server install completed\033[0m"
     echo "Your Server IP        :  ${domain} "
-    echo "Your Server Port      :  443 "
+    echo "Your Server Port      :  ${shadowsocksport}"
     echo "Your Password         :  ${shadowsockspwd} "
     echo "Your Encryption Method:  aes-256-gcm "
     echo "Your Plugin           :  v2ray-plugin"
@@ -216,6 +223,7 @@ print_ss_info(){
 
 install_all(){
     set_password
+    set_port
     set_domain
     pre_install
     install_libsodium
