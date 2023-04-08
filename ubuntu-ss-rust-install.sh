@@ -32,7 +32,7 @@ set_password(){
 # Set shadowsocks-rust config port
 set_port(){
     echo "\033[1;34mPlease enter port for shadowsocks-rust:\033[0m"
-    read -p "(Default port: abcd):" shadowsocksport
+    read -p "(Default port: 443):" shadowsocksport
     [ -z "${shadowsocksport}" ] && shadowsocksport="443"
     echo "\033[1;35mport = ${shadowsocksport}\033[0m"
 }
